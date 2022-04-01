@@ -1,4 +1,4 @@
-import React, { useState, createContext }from 'react';
+import React, { useEffect, useState, createContext, useCallback } from 'react';
 import '../styles.css';
 import Board from './Board';
 import Keyboard from './Keyboard';
@@ -9,6 +9,7 @@ export const AppContext = createContext();
 const App = () => {
   const [currAttempt, setCurrAttempt] = useState({attempt: 0, letterPos: 0})
   const [board, setBoard] = useState(boardDefault);
+  const [answer, setAnswer] = useState("right")
 
 
   const onSelectLetter = (keyVal) => {
@@ -43,7 +44,7 @@ const App = () => {
         <h1>Wordle Clone</h1>
       </nav>
 
-      <AppContext.Provider value={{ board, setBoard, currAttempt, setCurrAttempt, onEnter, onDelete, onSelectLetter }}>
+      <AppContext.Provider value={{ board, setBoard, currAttempt, setCurrAttempt, onEnter, onDelete, onSelectLetter, answer }}>
         <div className="game">
           <Board />
           <Keyboard />

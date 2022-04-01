@@ -3,7 +3,7 @@ import { AppContext } from './App'
 
 
 function Key({keyVal, bigKey}) {
-  const { board, setBoard, currAttempt, setCurrAttempt, onEnter, onDelete, onSelectLetter } = useContext(AppContext);
+  const { onEnter, onDelete, onSelectLetter } = useContext(AppContext);
 
   const selectLetter = () => {
     if (keyVal === "ENTER") {
