@@ -5,7 +5,8 @@ import Board from './Board';
 import Keyboard from './Keyboard';
 import { boardDefault } from '../Words';
 export const AppContext = createContext();
-
+const API_KEY = process.env.REACT_APP_WORD_GENERATOR_KEY
+console.log(API_KEY)
 
 const App = () => {
   const [currAttempt, setCurrAttempt] = useState({attempt: 0, letterPos: 0})
@@ -19,7 +20,7 @@ const App = () => {
       params: { count: "5", wordLength: "5" },
       headers: {
         "X-RapidAPI-Host": "random-words5.p.rapidapi.com",
-        "X-RapidAPI-Key": "9fa00f052fmsh2adc55abe6702a8p18e377jsn967d59ac26af",
+        "X-RapidAPI-Key": API_KEY,
       },
     };
     const words = await axios.request(options)
