@@ -14,22 +14,9 @@ function Keyboard() {
         onEnter();
       } else if (event.key === "Backspace") {
         onDelete();
-      } else {
-        keys1.forEach((key) => {
-          if (event.key.toLowerCase() === key.toLowerCase()) {
-            onSelectLetter(key);
-          }
-        })
-        keys2.forEach((key) => {
-          if (event.key.toLowerCase() === key.toLowerCase()) {
-            onSelectLetter(key);
-          }
-        })
-        keys3.forEach((key) => {
-          if (event.key.toLowerCase() === key.toLowerCase()) {
-            onSelectLetter(key);
-          }
-        });
+      }
+      if (event.key.length === 1 && event.key.match(/[a-z]/i)){
+        onSelectLetter(event.key.toUpperCase())
       }
     });
 
