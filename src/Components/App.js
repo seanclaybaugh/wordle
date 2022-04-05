@@ -6,7 +6,7 @@ import Keyboard from './Keyboard';
 import { boardDefault } from '../Words';
 export const AppContext = createContext();
 const API_KEY = process.env.REACT_APP_WORD_GENERATOR_KEY
-console.log(API_KEY)
+
 
 const App = () => {
   const [currAttempt, setCurrAttempt] = useState({attempt: 0, letterPos: 0})
