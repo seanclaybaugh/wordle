@@ -1,5 +1,6 @@
 import React, { useEffect, useState, createContext, useCallback } from 'react';
 import '../styles.css';
+import axios from 'axios';
 import Board from './Board';
 import Keyboard from './Keyboard';
 import { boardDefault } from '../Words';
@@ -11,6 +12,20 @@ const App = () => {
   const [board, setBoard] = useState(boardDefault);
   const [answer, setAnswer] = useState("right")
 
+  useEffect(async ()=> {
+    const options = {
+      method: "GET",
+      url: "https://random-words5.p.rapidapi.com/getMultipleRandom",
+      params: { count: "5", wordLength: "5" },
+      headers: {
+        "X-RapidAPI-Host": "random-words5.p.rapidapi.com",
+        "X-RapidAPI-Key": "9fa00f052fmsh2adc55abe6702a8p18e377jsn967d59ac26af",
+      },
+    };
+    const words = await axios.request(options)
+    console.log(words)
+    setAnswer(words.data[0])
+  }, [])
 
   const onSelectLetter = (keyVal) => {
      if (currAttempt.letterPos > 4) return;
