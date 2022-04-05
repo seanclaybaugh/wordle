@@ -13,7 +13,7 @@ function Letter({letterPos, attemptVal}) {
   (correct ? "correct" : almost ? "almost" : "error");
 
   return (
-    <div className="letter" id={letterState.toString()}>{letter}</div>
+    <div className="letter" id={letterState || ''}>{letter}</div>
   )
 }
 
