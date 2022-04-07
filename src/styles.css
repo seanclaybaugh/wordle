@@ -9,6 +9,7 @@
 body {
   padding: 0%;
   margin: 0;
+  background-color: #121212;
 }
 
 nav {
@@ -118,7 +119,7 @@ nav h1 {
   cursor: pointer;
 }
 
-#big {
+.big {
   width: 100px;
 }
 #disabled {

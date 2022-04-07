@@ -23,19 +23,19 @@ const App = () => {
   const [wordIndex, setWordIndex] = useState({words:[], index:0});
 
   useEffect(async ()=> {
-    const options = {
-      method: "GET",
-      url: "https://random-words5.p.rapidapi.com/getMultipleRandom",
-      params: { count: "20", wordLength: "5" },
-      headers: {
-        "X-RapidAPI-Host": "random-words5.p.rapidapi.com",
-        "X-RapidAPI-Key": API_KEY,
-      },
-    };
-    const words = await axios.request(options)
-    console.log(words.data)
-    setWordIndex({index: 0, words: words.data})
-    setAnswer(words.data[wordIndex.index].toUpperCase())
+    // const options = {
+    //   method: "GET",
+    //   url: "https://random-words5.p.rapidapi.com/getMultipleRandom",
+    //   params: { count: "20", wordLength: "5" },
+    //   headers: {
+    //     "X-RapidAPI-Host": "random-words5.p.rapidapi.com",
+    //     "X-RapidAPI-Key": API_KEY,
+    //   },
+    // };
+    // const words = await axios.request(options)
+    // console.log(words.data)
+    // setWordIndex({index: 0, words: words.data})
+    // setAnswer(words.data[wordIndex.index].toUpperCase())
   }, [])
 
   const onSelectLetter = (keyVal) => {
@@ -57,13 +57,11 @@ const App = () => {
     });
   }
 
-  const onEnter = () => {
+  const onEnter = async () => {
     if (currAttempt.letterPos !== 5) return;
     let currentWord = board[currAttempt.attempt].join('')
-
     if (currentWord === answer) {
       setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
-
       setTimeout(()=>{
         alert("Good job buddy!");
         setBoard(boardDefault())
@@ -73,10 +71,24 @@ const App = () => {
       }, 100);
 
     } else {
-      setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
+      const options = {
+        method: "GET",
+        url: "https://twinword-word-graph-dictionary.p.rapidapi.com/definition/",
+        params: { entry: currentWord },
+        headers: {
+          "X-RapidAPI-Host": "twinword-word-graph-dictionary.p.rapidapi.com",
+          "X-RapidAPI-Key":
+           API_KEY
+        }
+      };
+      const { data } = await axios.request(options)
+      if (data.result_msg === "Success") {
+        setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
+      } else {
+        alert("Please enter a valid word")
+      }
     }
   }
-
 
   return (
     <div className="App">
