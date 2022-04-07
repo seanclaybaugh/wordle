@@ -44,7 +44,7 @@ nav h1 {
 }
 
 .row {
-  flex: 33%;
+  height: 70px;
   display: flex;
   flex-direction: row;
   margin: 5px;

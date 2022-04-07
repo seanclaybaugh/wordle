@@ -10,22 +10,22 @@ const API_KEY = process.env.REACT_APP_WORD_GENERATOR_KEY
 
 const App = () => {
   const [currAttempt, setCurrAttempt] = useState({attempt: 0, letterPos: 0})
-  const [board, setBoard] = useState(boardDefault);
-  const [answer, setAnswer] = useState("right")
+  const [board, setBoard] = useState(boardDefault());
+  const [answer, setAnswer] = useState("RIGHT");
 
   useEffect(async ()=> {
-    const options = {
-      method: "GET",
-      url: "https://random-words5.p.rapidapi.com/getMultipleRandom",
-      params: { count: "5", wordLength: "5" },
-      headers: {
-        "X-RapidAPI-Host": "random-words5.p.rapidapi.com",
-        "X-RapidAPI-Key": API_KEY,
-      },
-    };
-    const words = await axios.request(options)
-    console.log(words)
-    setAnswer(words.data[0])
+    // const options = {
+    //   method: "GET",
+    //   url: "https://random-words5.p.rapidapi.com/getMultipleRandom",
+    //   params: { count: "5", wordLength: "5" },
+    //   headers: {
+    //     "X-RapidAPI-Host": "random-words5.p.rapidapi.com",
+    //     "X-RapidAPI-Key": API_KEY,
+    //   },
+    // };
+    // const words = await axios.request(options)
+    // console.log(words.data)
+    // setAnswer(words.data[0].toUpperCase())
   }, [])
 
   const onSelectLetter = (keyVal) => {
@@ -49,8 +49,17 @@ const App = () => {
 
   const onEnter = () => {
     if (currAttempt.letterPos !== 5) return;
+    let currentWord = board[currAttempt.attempt].join('')
 
-    setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
+    if (currentWord === answer) {
+      alert("Good job buddy! You so smart!");
+      setBoard(boardDefault())
+      setCurrAttempt({ attempt: 0, letterPos: 0 });
+    } else {
+      setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
+    }
+
+
   }
 
 

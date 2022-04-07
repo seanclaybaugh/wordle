@@ -1,4 +1,4 @@
-export const boardDefault = [
+export const boardDefault = () =>[
   ["", "", "", "", ""],
   ["", "", "", "", ""],
   ["", "", "", "", ""],
