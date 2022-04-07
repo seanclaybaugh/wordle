@@ -8,24 +8,34 @@ export const AppContext = createContext();
 const API_KEY = process.env.REACT_APP_WORD_GENERATOR_KEY
 
 
+/*
+TODOS:
+- Check word validity on enter
+- End game Lose consdition
+- Keys color change
+- Get green to show on Win condition
+*/
+
 const App = () => {
   const [currAttempt, setCurrAttempt] = useState({attempt: 0, letterPos: 0})
   const [board, setBoard] = useState(boardDefault());
   const [answer, setAnswer] = useState("RIGHT");
+  const [wordIndex, setWordIndex] = useState({words:[], index:0});
 
   useEffect(async ()=> {
-    // const options = {
-    //   method: "GET",
-    //   url: "https://random-words5.p.rapidapi.com/getMultipleRandom",
-    //   params: { count: "5", wordLength: "5" },
-    //   headers: {
-    //     "X-RapidAPI-Host": "random-words5.p.rapidapi.com",
-    //     "X-RapidAPI-Key": API_KEY,
-    //   },
-    // };
-    // const words = await axios.request(options)
-    // console.log(words.data)
-    // setAnswer(words.data[0].toUpperCase())
+    const options = {
+      method: "GET",
+      url: "https://random-words5.p.rapidapi.com/getMultipleRandom",
+      params: { count: "20", wordLength: "5" },
+      headers: {
+        "X-RapidAPI-Host": "random-words5.p.rapidapi.com",
+        "X-RapidAPI-Key": API_KEY,
+      },
+    };
+    const words = await axios.request(options)
+    console.log(words.data)
+    setWordIndex({index: 0, words: words.data})
+    setAnswer(words.data[wordIndex.index].toUpperCase())
   }, [])
 
   const onSelectLetter = (keyVal) => {
@@ -52,14 +62,19 @@ const App = () => {
     let currentWord = board[currAttempt.attempt].join('')
 
     if (currentWord === answer) {
-      alert("Good job buddy! You so smart!");
-      setBoard(boardDefault())
-      setCurrAttempt({ attempt: 0, letterPos: 0 });
+      setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
+
+      setTimeout(()=>{
+        alert("Good job buddy!");
+        setBoard(boardDefault())
+        setCurrAttempt({ attempt: 0, letterPos: 0 });
+        setWordIndex({...wordIndex, index: wordIndex.index+1})
+        setAnswer(wordIndex.words[wordIndex.index + 1].toUpperCase());
+      }, 100);
+
     } else {
       setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
     }
-
-
   }
 
 
