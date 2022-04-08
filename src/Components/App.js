@@ -10,10 +10,10 @@ const API_KEY = process.env.REACT_APP_WORD_GENERATOR_KEY
 
 /*
 TODOS:
-- Check word validity on enter
-- End game Lose consdition
-- Keys color change
-- Get green to show on Win condition
+X Check word validity on enter
+- End game Lose condition
+X Keys color change
+X Get green to show on Win condition
 */
 
 const App = () => {
@@ -21,22 +21,23 @@ const App = () => {
   const [board, setBoard] = useState(boardDefault());
   const [answer, setAnswer] = useState("RIGHT");
   const [wordIndex, setWordIndex] = useState({words:[], index:0});
+  const [letterStatus, setLetterStatus] = useState({});
 
-  useEffect(async ()=> {
-    // const options = {
-    //   method: "GET",
-    //   url: "https://random-words5.p.rapidapi.com/getMultipleRandom",
-    //   params: { count: "20", wordLength: "5" },
-    //   headers: {
-    //     "X-RapidAPI-Host": "random-words5.p.rapidapi.com",
-    //     "X-RapidAPI-Key": API_KEY,
-    //   },
-    // };
-    // const words = await axios.request(options)
-    // console.log(words.data)
-    // setWordIndex({index: 0, words: words.data})
-    // setAnswer(words.data[wordIndex.index].toUpperCase())
-  }, [])
+  // useEffect(async ()=> {
+  //   const options = {
+  //     method: "GET",
+  //     url: "https://random-words5.p.rapidapi.com/getMultipleRandom",
+  //     params: { count: "20", wordLength: "5" },
+  //     headers: {
+  //       "X-RapidAPI-Host": "random-words5.p.rapidapi.com",
+  //       "X-RapidAPI-Key": API_KEY,
+  //     },
+  //   };
+  //   const words = await axios.request(options)
+  //   console.log(words.data)
+  //   setWordIndex({index: 0, words: words.data})
+  //   setAnswer(words.data[wordIndex.index].toUpperCase())
+  // }, [])
 
   const onSelectLetter = (keyVal) => {
      if (currAttempt.letterPos > 4) return;
@@ -64,9 +65,10 @@ const App = () => {
       setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
       setTimeout(()=>{
         alert("Good job buddy!");
-        setBoard(boardDefault())
+        setBoard(boardDefault());
         setCurrAttempt({ attempt: 0, letterPos: 0 });
         setWordIndex({...wordIndex, index: wordIndex.index+1})
+        setLetterStatus({})
         setAnswer(wordIndex.words[wordIndex.index + 1].toUpperCase());
       }, 100);
 
@@ -83,6 +85,20 @@ const App = () => {
       };
       const { data } = await axios.request(options)
       if (data.result_msg === "Success") {
+
+
+        const newStatus = letterStatus;
+
+        for (let i = 0; i < 5; i++) {
+          if(currentWord[i] === answer[i]) {
+            newStatus[currentWord[i]] = 'correct'
+          } else if (answer.includes(currentWord[i]) && !letterStatus[currentWord[i]]) {
+            newStatus[currentWord[i]] = 'almost'
+          } else  if (!letterStatus[currentWord[i]]){
+            newStatus[currentWord[i]] = 'error'
+          }
+        }
+        setLetterStatus(newStatus);
         setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
       } else {
         alert("Please enter a valid word")
@@ -96,7 +112,7 @@ const App = () => {
         <h1>Wordle Clone</h1>
       </nav>
 
-      <AppContext.Provider value={{ board, setBoard, currAttempt, setCurrAttempt, onEnter, onDelete, onSelectLetter, answer }}>
+      <AppContext.Provider value={{ board, setBoard, currAttempt, setCurrAttempt, onEnter, onDelete, onSelectLetter, answer, letterStatus, setLetterStatus }}>
         <div className="game">
           <Board />
           <Keyboard />

@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { AppContext } from './App'
 
 
 function Key({keyVal, bigKey}) {
-  const { onEnter, onDelete, onSelectLetter, answer, board, currAttempt } = useContext(AppContext);
+  const { onEnter, onDelete, onSelectLetter, letterStatus } = useContext(AppContext);
 
   const selectLetter = () => {
     if (keyVal === "ENTER") {
@@ -14,10 +14,10 @@ function Key({keyVal, bigKey}) {
       onSelectLetter(keyVal);
     }
   }
-  //const letterState =
+
 
   return (
-  <div className={bigKey ? "key big":"key"} onClick={selectLetter}>
+  <div className={bigKey ? "key big":"key"} id={letterStatus[keyVal]} onClick={selectLetter}>
     {keyVal}
   </div>
   )
